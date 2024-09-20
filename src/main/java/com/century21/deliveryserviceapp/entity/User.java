@@ -1,5 +1,6 @@
 package com.century21.deliveryserviceapp.entity;
 
+import com.century21.deliveryserviceapp.common.config.PasswordEncoder;
 import com.century21.deliveryserviceapp.common.enums.Authority;
 import com.century21.deliveryserviceapp.user.dto.request.SignUpRequest;
 import jakarta.persistence.*;
@@ -46,7 +47,7 @@ public class User {
         this.authority = authority;
     }
 
-    public static User from(SignUpRequest signUpRequest) {
+    public static User from(SignUpRequest signUpRequest, PasswordEncoder passwordEncoder) {
         return new User(
                 signUpRequest.getEmail(),
                 signUpRequest.getPassword(),

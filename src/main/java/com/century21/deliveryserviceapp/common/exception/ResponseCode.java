@@ -14,6 +14,14 @@ public enum ResponseCode {
     // 사용자
     NOT_FOUND_USER("해당 사용자는 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     INVALID_USER_AUTHORITY("해당 사용자 권한은 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
+    DUPLICATE_EMAIL("이미 존재하는 이메일입니다.", HttpStatus.CONFLICT),
+    INVALID_PASSWORD("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
+
+
+
+    // JWT 관련 예외
+    INVALID_JWT_TOKEN("유효하지 않은 JWT 토큰입니다.", HttpStatus.UNAUTHORIZED),
+    EXPIRED_JWT_TOKEN("JWT 토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED);
 
 
     // 가게
