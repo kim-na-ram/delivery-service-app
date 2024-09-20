@@ -17,7 +17,7 @@ public enum ResponseCode {
 
 
     // 가게
-
+    NOT_FOUND_STORE("해당 가게는 존재하지 않습니다."),
 
     // 메뉴
 
