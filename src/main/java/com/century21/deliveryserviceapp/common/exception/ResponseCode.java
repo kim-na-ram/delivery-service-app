@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ResponseCode {
     // 공통
-    SUCCESS("정상 처리되었습니다.", HttpStatus.OK),
+    SUCCESS("정상 처리되었습니다."),
 
 
     // 사용자
-    NOT_FOUND_USER("해당 사용자는 존재하지 않습니다.", HttpStatus.NOT_FOUND),
-    INVALID_USER_AUTHORITY("해당 사용자 권한은 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
+    NOT_FOUND_USER("해당 사용자는 존재하지 않습니다."),
+    INVALID_USER_AUTHORITY("해당 사용자 권한은 유효하지 않습니다."),
 
 
     // 가게
@@ -31,5 +31,4 @@ public enum ResponseCode {
     ;
 
     private final String message;
-    private final HttpStatus status;
 }
