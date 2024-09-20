@@ -1,6 +1,7 @@
 package com.century21.deliveryserviceapp.entity;
 
 import com.century21.deliveryserviceapp.store.dto.request.RegisterStoreRequest;
+import com.century21.deliveryserviceapp.store.dto.request.UpdateStoreRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -69,5 +70,23 @@ public class Store {
 
     public void deleteStore() {
         this.deletedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void update(UpdateStoreRequest updateStoreRequest){
+        if(updateStoreRequest.getStoreName()!=null){
+            this.name= updateStoreRequest.getStoreName();
+        }
+        if(updateStoreRequest.getIntroduction()!=null){
+            this.introduction= updateStoreRequest.getIntroduction();
+        }
+        if(updateStoreRequest.getOpeningTime()!=null){
+            this.openingTime=updateStoreRequest.getOpeningTime();
+        }
+        if(updateStoreRequest.getClosedTime()!=null){
+            this.closedTime=updateStoreRequest.getClosedTime();
+        }
+        if(updateStoreRequest.getMinOrderPrice()!=null){
+            this.minOrderPrice= updateStoreRequest.getMinOrderPrice();
+        }
     }
 }
