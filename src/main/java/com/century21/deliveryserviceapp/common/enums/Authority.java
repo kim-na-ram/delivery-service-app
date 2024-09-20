@@ -1,6 +1,6 @@
 package com.century21.deliveryserviceapp.common.enums;
 
-import com.century21.deliveryserviceapp.common.exception.ApiException;
+import com.century21.deliveryserviceapp.common.exception.InvalidParameterException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +21,6 @@ public enum Authority {
             }
         }
 
-        throw ApiException.of(INVALID_USER_AUTHORITY);
+        throw new InvalidParameterException(INVALID_USER_AUTHORITY);
     }
 }

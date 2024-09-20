@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class ErrorResponse extends BaseResponse {
     private ErrorResponse(ApiException apiException) {
-        super(apiException.getCode(), apiException.getMessage());
+        super(apiException.getHttpStatus().value(), apiException.getMessage());
     }
 
     private ErrorResponse(int code, String message) {
