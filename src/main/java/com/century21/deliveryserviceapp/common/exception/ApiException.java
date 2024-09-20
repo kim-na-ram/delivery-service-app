@@ -1,18 +1,15 @@
 package com.century21.deliveryserviceapp.common.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class ApiException extends RuntimeException {
-    private int code;
+    private HttpStatus httpStatus;
     private String message;
 
-    private ApiException(int code, String message) {
-        this.code = code;
+    public ApiException(HttpStatus httpStatus, String message) {
+        this.httpStatus = httpStatus;
         this.message = message;
-    }
-
-    public static ApiException of(ResponseCode responseCode) {
-        return new ApiException(responseCode.getStatus().value(), responseCode.getMessage());
     }
 }
