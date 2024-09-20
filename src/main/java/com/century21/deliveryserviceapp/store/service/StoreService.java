@@ -21,6 +21,7 @@ import static com.century21.deliveryserviceapp.common.exception.ResponseCode.NOT
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class StoreService {
 
     private final StoreRepository storeRepository;
@@ -75,5 +76,13 @@ public class StoreService {
                 store.getMinOrderPrice()
         );
 
+    }
+
+    @Transactional
+    public void deleteStore(Long storeId) {
+        Store store=storeRepository.findById(storeId).orElseThrow(()->
+                new NotFoundException(NOT_FOUND_STORE));
+
+        storeRepository.deleteById(storeId);
     }
 }

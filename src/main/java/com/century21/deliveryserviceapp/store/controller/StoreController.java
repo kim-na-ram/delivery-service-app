@@ -1,5 +1,6 @@
 package com.century21.deliveryserviceapp.store.controller;
 
+import com.century21.deliveryserviceapp.common.exception.ResponseCode;
 import com.century21.deliveryserviceapp.common.response.SuccessResponse;
 import com.century21.deliveryserviceapp.store.dto.request.RegisterStoreRequest;
 import com.century21.deliveryserviceapp.store.dto.request.UpdateStoreRequest;
@@ -7,8 +8,10 @@ import com.century21.deliveryserviceapp.store.dto.response.StoreDetailResponse;
 import com.century21.deliveryserviceapp.store.dto.response.RegisterStoreResponse;
 import com.century21.deliveryserviceapp.store.dto.response.UpdateStoreResponse;
 import com.century21.deliveryserviceapp.store.service.StoreService;
+import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,5 +50,11 @@ public class StoreController {
         return ResponseEntity.ok(SuccessResponse.of(storeService.updateStore(storeId,updateStoreRequest)));
     }
 
+    //가게 폐업
+    @DeleteMapping("/{storeId}")
+    public ResponseEntity<SuccessResponse<Void>> deleteStore(@PathVariable("storeId") Long storeId){
+        storeService.deleteStore(storeId);
+        return ResponseEntity.ok(SuccessResponse.of(null));
+    }
 
 }
