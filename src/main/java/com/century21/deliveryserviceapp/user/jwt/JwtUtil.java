@@ -46,7 +46,7 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    // JWT 토큰 생성
+    // jwt 토큰 생성
     public String createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
         Date now = new Date();
@@ -71,7 +71,7 @@ public class JwtUtil {
         }
     }
 
-    // JWT 토큰 유효성 검증
+
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
