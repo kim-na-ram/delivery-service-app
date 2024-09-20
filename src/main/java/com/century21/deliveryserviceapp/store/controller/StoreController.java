@@ -55,5 +55,4 @@ public class StoreController {
         storeService.deleteStore(storeId);
         return ResponseEntity.ok(SuccessResponse.of(null));
     }
-
 }
