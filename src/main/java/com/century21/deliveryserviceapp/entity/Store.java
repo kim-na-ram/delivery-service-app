@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.awt.*;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalTime;
 
 @Getter
 @Entity
@@ -25,16 +26,15 @@ public class Store {
     private String name;
 
     @Column
-    @NotNull
     private String introduction;
 
     @Column(name = "opening_time")
     @NotNull
-    private Time openingTime;
+    private LocalTime openingTime;
 
     @Column(name = "closed_time")
     @NotNull
-    private Time closedTime;
+    private LocalTime closedTime;
 
     @Column(name = "min_order_price")
     @NotNull
@@ -47,7 +47,7 @@ public class Store {
     @JoinColumn(name = "owner_id", nullable = false)
     private User user;
 
-    private Store(User user, String name, String introduction, Time openingTime, Time closedTime, int minOrderPrice) {
+    private Store(User user, String name, String introduction, LocalTime openingTime, LocalTime closedTime, int minOrderPrice) {
         this.user = user;
         this.name = name;
         this.introduction = introduction;
@@ -56,13 +56,13 @@ public class Store {
         this.minOrderPrice = minOrderPrice;
     }
 
-    public Store from(User user, RegisterStoreRequest registerStoreRequest) {
+    public static Store from(User user, RegisterStoreRequest registerStoreRequest) {
         return new Store(
                 user,
                 registerStoreRequest.getStoreName(),
                 registerStoreRequest.getIntroduction(),
-                Time.valueOf(registerStoreRequest.getOpeningTime()),
-                Time.valueOf(registerStoreRequest.getClosedTime()),
+                registerStoreRequest.getOpeningTime(),
+                registerStoreRequest.getClosedTime(),
                 registerStoreRequest.getMinOrderPrice()
         );
     }
