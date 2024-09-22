@@ -9,6 +9,7 @@ import com.century21.deliveryserviceapp.store.dto.response.UpdateStoreResponse;
 import com.century21.deliveryserviceapp.store.service.StoreService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class StoreController {
     }
 
     //가게 리스트 조회
-//    @GetMapping()
+    @GetMapping()
 //    public ResponseEntity<SuccessResponse<Page<StoreDetailResponse>>> getStores(
 //            @RequestParam(required = false) String name,
 //            @RequestParam(defaultValue = "10") int pageSize,

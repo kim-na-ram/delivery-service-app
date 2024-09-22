@@ -5,6 +5,7 @@ import com.century21.deliveryserviceapp.common.exception.InvalidParameterExcepti
 import com.century21.deliveryserviceapp.common.exception.NotFoundException;
 import com.century21.deliveryserviceapp.entity.Store;
 import com.century21.deliveryserviceapp.entity.User;
+import com.century21.deliveryserviceapp.review.repository.ReviewRepository;
 import com.century21.deliveryserviceapp.store.dto.request.RegisterStoreRequest;
 import com.century21.deliveryserviceapp.store.dto.request.UpdateStoreRequest;
 import com.century21.deliveryserviceapp.store.dto.response.StoreDetailResponse;
@@ -13,6 +14,9 @@ import com.century21.deliveryserviceapp.store.dto.response.UpdateStoreResponse;
 import com.century21.deliveryserviceapp.store.repository.StoreRepository;
 import com.century21.deliveryserviceapp.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +29,7 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
+    private final ReviewRepository reviewRepository;
 
     @Transactional
     public RegisterStoreResponse registerStore(Long userId,RegisterStoreRequest registerStoreRequest) {
@@ -60,7 +65,9 @@ public class StoreService {
                 store.getIntroduction(),
                 store.getOpeningTime(),
                 store.getClosedTime(),
-                store.getMinOrderPrice()
+                store.getMinOrderPrice(),
+                store.getAverageRating(),
+                store.getMenuList()
         );
     }
 
@@ -88,6 +95,9 @@ public class StoreService {
         Store store=storeRepository.findById(storeId).orElseThrow(()->
                 new NotFoundException(NOT_FOUND_STORE));
 
-        storeRepository.deleteById(storeId);
+        store.deleteStore();
+
     }
+
+
 }
