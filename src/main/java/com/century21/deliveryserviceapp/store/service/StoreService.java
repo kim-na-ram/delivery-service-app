@@ -60,6 +60,11 @@ public class StoreService {
         Store store=storeRepository.findById(storeId).orElseThrow(()->
                 new NotFoundException(NOT_FOUND_STORE));
 
+        //폐업 했는 지 확인
+        if(store.getDeletedAt()!=null){
+            throw new NotFoundException(NOT_FOUND_STORE);
+        }
+
         return new StoreDetailResponse(
                 store.getName(),
                 store.getIntroduction(),
