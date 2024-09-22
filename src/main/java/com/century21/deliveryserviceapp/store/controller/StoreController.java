@@ -1,6 +1,5 @@
 package com.century21.deliveryserviceapp.store.controller;
 
-import com.century21.deliveryserviceapp.common.exception.ResponseCode;
 import com.century21.deliveryserviceapp.common.response.SuccessResponse;
 import com.century21.deliveryserviceapp.store.dto.request.RegisterStoreRequest;
 import com.century21.deliveryserviceapp.store.dto.request.UpdateStoreRequest;
@@ -8,10 +7,8 @@ import com.century21.deliveryserviceapp.store.dto.response.StoreDetailResponse;
 import com.century21.deliveryserviceapp.store.dto.response.RegisterStoreResponse;
 import com.century21.deliveryserviceapp.store.dto.response.UpdateStoreResponse;
 import com.century21.deliveryserviceapp.store.service.StoreService;
-import jakarta.validation.constraints.Null;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +21,7 @@ public class StoreController {
 
     //가게 등록
     @PostMapping("/{userId}")
-    public ResponseEntity<SuccessResponse<RegisterStoreResponse>> registerStore(@PathVariable("userId") Long userId, @RequestBody RegisterStoreRequest registerStoreRequest){
+    public ResponseEntity<SuccessResponse<RegisterStoreResponse>> registerStore(@PathVariable("userId") Long userId, @RequestBody @Valid RegisterStoreRequest registerStoreRequest){
         return ResponseEntity.ok(SuccessResponse.of(storeService.registerStore(userId,registerStoreRequest)));
     }
 
@@ -46,7 +43,7 @@ public class StoreController {
 
     //가게 수정
     @PatchMapping("/{storeId}")
-    public ResponseEntity<SuccessResponse<UpdateStoreResponse>> updateStore(@PathVariable("storeId") Long storeId, @RequestBody UpdateStoreRequest updateStoreRequest){
+    public ResponseEntity<SuccessResponse<UpdateStoreResponse>> updateStore(@PathVariable("storeId") Long storeId, @RequestBody @Valid UpdateStoreRequest updateStoreRequest){
         return ResponseEntity.ok(SuccessResponse.of(storeService.updateStore(storeId,updateStoreRequest)));
     }
 
