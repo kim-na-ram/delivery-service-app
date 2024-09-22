@@ -7,11 +7,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import java.awt.*;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -41,12 +44,21 @@ public class Store {
     @NotNull
     private int minOrderPrice;
 
+    @Formula("(SELECT AVG(r.rating) FROM review_tb r where r.store_id=id)")
+    @Column(name = "average_rating")
+    @NotNull
+    private double averageRating;
+
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User user;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Menu> menuList=new ArrayList<>();
+
 
     private Store(User user, String name, String introduction, LocalTime openingTime, LocalTime closedTime, int minOrderPrice) {
         this.user = user;
