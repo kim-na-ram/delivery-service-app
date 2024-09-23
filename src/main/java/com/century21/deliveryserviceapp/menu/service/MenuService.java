@@ -48,7 +48,7 @@ public class MenuService {
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_STORE));
 
         // Menu 정보 조회
-        Menu menu = menuRepository.findByIdAndDeletedIsNull(menuId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
+        Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
 
         // 사장님의 가게인지아닌지
         // 1 = {userIdFromToken}
@@ -70,7 +70,7 @@ public class MenuService {
         Store store = storeRepository.findById(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
 
         // Menu 정보 조회
-        Menu menu = menuRepository.findById(menuId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
+        Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
 
         // 사장님의 가게인지아닌지
         // 1 = {userIdFromToken}
@@ -81,5 +81,6 @@ public class MenuService {
 
         // 메뉴 삭제
         menu.deleteMenu();
+        menuRepository.save(menu);
     }
 }
