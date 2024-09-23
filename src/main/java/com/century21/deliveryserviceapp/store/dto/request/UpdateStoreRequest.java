@@ -9,13 +9,9 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 public class UpdateStoreRequest {
-    @NotBlank
     private String storeName;
     private String introduction;
-    @NotNull
     private LocalTime openingTime;
-    @NotNull
     private LocalTime closedTime;
-    @NotNull
     private Integer minOrderPrice;
 }

@@ -44,9 +44,9 @@ public class StoreController {
     }
 
     //가게 수정
-    @PatchMapping("/{storeId}")
-    public ResponseEntity<SuccessResponse<UpdateStoreResponse>> updateStore(@PathVariable("storeId") Long storeId, @RequestBody @Valid UpdateStoreRequest updateStoreRequest){
-        return ResponseEntity.ok(SuccessResponse.of(storeService.updateStore(storeId,updateStoreRequest)));
+    @PatchMapping("/{storeId}/{userId}")
+    public ResponseEntity<SuccessResponse<UpdateStoreResponse>> updateStore(@PathVariable("userId") Long userId,@PathVariable("storeId") Long storeId, @RequestBody UpdateStoreRequest updateStoreRequest){
+        return ResponseEntity.ok(SuccessResponse.of(storeService.updateStore(userId,storeId,updateStoreRequest)));
     }
 
     //가게 폐업

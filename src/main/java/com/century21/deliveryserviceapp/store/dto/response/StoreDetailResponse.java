@@ -1,5 +1,6 @@
 package com.century21.deliveryserviceapp.store.dto.response;
 
+import com.century21.deliveryserviceapp.entity.Store;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.time.LocalTime;
@@ -14,5 +15,17 @@ public class StoreDetailResponse {
     private LocalTime closedTime;
     private int minOrderPrice;
     private double averageRating;
-    private List<MenuDto> menuList;
+    private List<MenuReponse> menuList;
+
+    public static StoreDetailResponse from(Store store,List<MenuReponse> menuList){
+        return new StoreDetailResponse(
+                store.getName(),
+                store.getIntroduction(),
+                store.getOpeningTime(),
+                store.getClosedTime(),
+                store.getMinOrderPrice(),
+                store.getAverageRating(),
+                menuList
+        );
+    }
 }
