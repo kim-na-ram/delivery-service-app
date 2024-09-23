@@ -23,7 +23,6 @@ public class MenuController {
     }
 
     // 메뉴 수정
-
     @PutMapping("/api/stores/{storeId}/menus/{menuId}")
     public ResponseEntity<SuccessResponse<MenuResponse>> updateMenu(@PathVariable Long storeId, @PathVariable Long menuId, @Valid @RequestBody MenuRequest menuRequest) {
         MenuResponse menuResponse = menuService.updateMenu(storeId, menuId, menuRequest);
