@@ -11,6 +11,7 @@ import java.time.LocalTime;
 public class RegisterStoreRequest {
     @NotBlank
     private String storeName;
+    @NotBlank
     private String introduction;
     @NotNull
     private LocalTime openingTime;

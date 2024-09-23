@@ -51,6 +51,7 @@ public class StoreService {
             throw new ForbiddenException(MAX_STORE_LIMIT);
         }
 
+
         Store newStore=Store.from(user,registerStoreRequest);
         Store savedStore=storeRepository.save(newStore);
 
@@ -85,9 +86,9 @@ public class StoreService {
 
         Page<Store> stores;
         if(name==null || name.isEmpty()){
-            stores=storeRepository.findAll(pageable);
+            stores=storeRepository.findByDeletedAtIsNull(pageable);
         }else{
-            stores=storeRepository.findByNameContaining(name,pageable);
+            stores=storeRepository.findByNameContainingAndDeletedAtIsNull(name,pageable);
         }
 
         return stores.map(store->{
@@ -101,7 +102,7 @@ public class StoreService {
         User user=userRepository.findById(userId).orElseThrow(()->
                 new NotFoundException(NOT_FOUND_USER));
 
-        Store store=storeRepository.findById(storeId).orElseThrow(()->
+        Store store=storeRepository.findByIdAndDeletedAtIsNull(storeId).orElseThrow(()->
                 new NotFoundException(NOT_FOUND_STORE));
 
         //user가 해당 owner인지 확인
