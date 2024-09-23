@@ -36,6 +36,7 @@ public class UserService {
         return new SignUpResponse(user.getId(), user.getEmail(), user.getNickname(), user.getAuthority().name());
     }
 
+
     // 로그인
     public LoginResponse login(LoginRequest loginRequestDto) {
         User user = userRepository.findByEmail(loginRequestDto.getEmail())
@@ -53,6 +54,7 @@ public class UserService {
         return new LoginResponse(accessToken);
     }
 
+    // 테스트 실패
     // 회원정보 조회
     @Transactional(readOnly = true)
     public UserResponse getUserInfo(Long userId) {
@@ -62,6 +64,7 @@ public class UserService {
         return new UserResponse(user.getId(), user.getEmail(), user.getNickname(), user.getAuthority().name());
     }
 
+    // 테스트 실패
     // 회원 탈퇴 (soft delete)
     @Transactional
     public void deleteUser(Long userId, String password) {
