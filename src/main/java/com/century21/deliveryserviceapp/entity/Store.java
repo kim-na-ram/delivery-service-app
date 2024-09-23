@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Formula;
 
+import java.awt.*;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalTime;
