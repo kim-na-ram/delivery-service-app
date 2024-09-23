@@ -5,6 +5,7 @@ import com.century21.deliveryserviceapp.store.dto.request.RegisterStoreRequest;
 import com.century21.deliveryserviceapp.store.dto.request.UpdateStoreRequest;
 import com.century21.deliveryserviceapp.store.dto.response.StoreDetailResponse;
 import com.century21.deliveryserviceapp.store.dto.response.RegisterStoreResponse;
+import com.century21.deliveryserviceapp.store.dto.response.StoreResponse;
 import com.century21.deliveryserviceapp.store.dto.response.UpdateStoreResponse;
 import com.century21.deliveryserviceapp.store.service.StoreService;
 import jakarta.validation.Valid;
@@ -34,13 +35,13 @@ public class StoreController {
 
     //가게 리스트 조회
     @GetMapping()
-//    public ResponseEntity<SuccessResponse<Page<StoreDetailResponse>>> getStores(
-//            @RequestParam(required = false) String name,
-//            @RequestParam(defaultValue = "10") int pageSize,
-//            @RequestParam(defaultValue = "1") int pageNumber
-//    ){
-//        return ResponseEntity.ok(SuccessResponse.of(storeService.getStores(name,pageSize,pageNumber)));
-//    }
+    public ResponseEntity<SuccessResponse<Page<StoreResponse>>> getStores(
+            @RequestParam(required = false) String name,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "1") int pageNumber
+    ){
+        return ResponseEntity.ok(SuccessResponse.of(storeService.getStores(name,pageSize,pageNumber)));
+    }
 
     //가게 수정
     @PatchMapping("/{storeId}")
