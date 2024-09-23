@@ -1,8 +1,8 @@
 package com.century21.deliveryserviceapp.entity;
 
-import com.century21.deliveryserviceapp.menu.common.entity.Timestamped;
 import com.century21.deliveryserviceapp.menu.dto.request.MenuRequest;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,17 +15,18 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "menu_tb")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class Menu extends Timestamped {
+public class Menu {
     // 필요한 필드 : 메뉴명, 가격, 연관된 가게,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String menuName;
+    private String name;
 
-    private Long price;
+    @Column
+    @NotNull
+    private int price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
@@ -36,17 +37,26 @@ public class Menu extends Timestamped {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedAt;
 
-    public Menu(String menuName, Long price, Store store) {
-        this.menuName = menuName;
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime deletedAt;
+
+    private Menu(String name, int price, Store store) {
+        this.name = name;
         this.price = price;
         this.store = store;
     }
 
     public static Menu from(MenuRequest menuRequest, Store store) {
         return new Menu(
-                menuRequest.getMenuName(),
+                menuRequest.getName(),
                 menuRequest.getPrice(),
                 store
         );
+    }
+
+    public void updateMenu(String name, int price) {
+        this.name = name;
+        this.price = price;
     }
 }

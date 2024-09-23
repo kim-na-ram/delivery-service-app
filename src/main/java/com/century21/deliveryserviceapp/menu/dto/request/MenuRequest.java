@@ -1,11 +1,15 @@
 package com.century21.deliveryserviceapp.menu.dto.request;
 
-import com.century21.deliveryserviceapp.common.enums.Authority;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class MenuRequest {
 
-    private String menuName;
-    private Long price;
+    @NotBlank(message = "메뉴 이름을 등록해주세요.")
+    private String name;
+
+    @NotNull(message = "메뉴 가격을 등록해주세요.")
+    private int price;
 }
