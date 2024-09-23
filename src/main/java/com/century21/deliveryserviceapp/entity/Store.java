@@ -13,11 +13,8 @@ import java.awt.*;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalTime;
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
-=======
->>>>>>> 8e6f8ca (feat(store) 가게 등록 기능 추가)
 
 @Getter
 @Entity
@@ -58,13 +55,10 @@ public class Store {
     @JoinColumn(name = "owner_id", nullable = false)
     private User user;
 
-<<<<<<< HEAD
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
     private List<Menu> menuList=new ArrayList<>();
 
 
-=======
->>>>>>> 8e6f8ca (feat(store) 가게 등록 기능 추가)
     private Store(User user, String name, String introduction, LocalTime openingTime, LocalTime closedTime, int minOrderPrice) {
         this.user = user;
         this.name = name;
