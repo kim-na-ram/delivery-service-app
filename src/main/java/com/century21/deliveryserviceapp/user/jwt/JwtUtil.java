@@ -31,13 +31,12 @@ public class JwtUtil {
     private String secretKey;
 
     private Key key;
-    private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
 
     @PostConstruct
     public void init() {
-        // 안전한 키 생성 (HMAC-SHA256 알고리즘 사용)
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
-        log.info("JWT Util initialized with secret key.");
+        byte[] bytes = Base64.getDecoder().decode(secretKey);
+        key = Keys.hmacShaKeyFor(bytes);
     }
 
     // Access Token 생성
@@ -46,15 +45,15 @@ public class JwtUtil {
         Date expiration = new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_TIME);
 
         log.info("Creating access token for user: {}", email);
-
-        return Jwts.builder()
+        String result = Jwts.builder()
                 .setSubject(email)
                 .claim("userId", userId)
                 .claim("authority", authority)
                 .setIssuedAt(now)
                 .setExpiration(expiration)
-                .signWith(key, signatureAlgorithm)
+                .signWith(key)
                 .compact();
+        return result;
     }
 
     // JWT에서 사용자 정보 추출
@@ -72,15 +71,21 @@ public class JwtUtil {
         return new AuthUser(userId, authority);
     }
 
-    // JWT 토큰 유효성 검증
+    // 토큰 검증
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            log.error("유효하지 않은 토큰: {}", e.getMessage());
-            return false;
+        } catch (SecurityException | MalformedJwtException | io.jsonwebtoken.security.SignatureException e) {
+            log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
+        } catch (ExpiredJwtException e) {
+            log.error("Expired JWT token, 만료된 JWT token 입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
+        } catch (IllegalArgumentException e) {
+            log.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
         }
+        return false;
     }
 
     // HTTP 요청에서 JWT 토큰 추출

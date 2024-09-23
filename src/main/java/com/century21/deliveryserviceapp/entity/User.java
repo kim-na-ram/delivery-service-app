@@ -48,9 +48,12 @@ public class User {
     }
 
     public static User from(SignUpRequest signUpRequest, PasswordEncoder passwordEncoder) {
+        // 비밀번호 암호화 처리
+        String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
+
         return new User(
                 signUpRequest.getEmail(),
-                signUpRequest.getPassword(),
+                encodedPassword,
                 signUpRequest.getNickname(),
                 Authority.getAuthority(signUpRequest.getAuthority())
         );
