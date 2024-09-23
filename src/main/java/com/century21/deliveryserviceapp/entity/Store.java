@@ -55,7 +55,7 @@ public class Store {
     @JoinColumn(name = "owner_id", nullable = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
     private List<Menu> menuList=new ArrayList<>();
 
 
