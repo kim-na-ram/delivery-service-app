@@ -17,7 +17,8 @@ public enum ResponseCode {
 
 
     // 가게
-
+    NOT_FOUND_STORE("해당 가게는 존재하지 않습니다."),
+    MAX_STORE_LIMIT("가게를 3개 이상 등록할 수 없습니다"),
 
     // 메뉴
     NOT_FOUND_MENU("해당 메뉴는 존재하지 않습니다."),

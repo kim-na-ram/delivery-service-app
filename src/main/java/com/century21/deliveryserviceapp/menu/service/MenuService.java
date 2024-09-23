@@ -28,8 +28,7 @@ public class MenuService {
     public MenuResponse saveMenu(Long storeId, MenuRequest menuRequest) {
 
         // Store 정보 조회
-        // TODO [MENU -> STORE]
-        Store store = storeRepository.findById(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
+        Store store = storeRepository.findById(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_STORE));
 
         // TODO [OWNER Authorization Check]
         if (store.getUser().getId() != 2) {
@@ -46,8 +45,7 @@ public class MenuService {
     public MenuResponse updateMenu(Long storeId, Long menuId, MenuRequest menuRequest) {
 
         // Store 정보 조회
-        // TODO [MENU -> STORE]
-        Store store = storeRepository.findById(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
+        Store store = storeRepository.findById(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_STORE));
 
         // Menu 정보 조회
         Menu menu = menuRepository.findById(menuId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
@@ -68,8 +66,7 @@ public class MenuService {
     @Transactional
     public void deleteMenu(Long storeId, Long menuId) {
         // Store 정보 조회
-        // TODO [MENU -> STORE]
-        Store store = storeRepository.findById(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
+        Store store = storeRepository.findById(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_STORE));
 
         // Menu 정보 조회
         Menu menu = menuRepository.findById(menuId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));

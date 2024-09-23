@@ -21,16 +21,22 @@ public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+<<<<<<< HEAD
 
     private String name;
 
     @Column
     @NotNull
+=======
+    private String menuName;
+
+>>>>>>> bb1fbdf5409ec9e640c3342cd6f78fa7018dc293
     private int price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
+<<<<<<< HEAD
 
     @LastModifiedDate
     @Column
@@ -63,4 +69,6 @@ public class Menu {
     public void deleteMenu() {
         this.deletedAt = LocalDateTime.now();
     }
+=======
+>>>>>>> bb1fbdf5409ec9e640c3342cd6f78fa7018dc293
 }
