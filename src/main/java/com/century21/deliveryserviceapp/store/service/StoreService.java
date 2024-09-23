@@ -54,14 +54,7 @@ public class StoreService {
         Store newStore=Store.from(user,registerStoreRequest);
         Store savedStore=storeRepository.save(newStore);
 
-        return new RegisterStoreResponse(
-                savedStore.getId(),
-                savedStore.getName(),
-                savedStore.getIntroduction(),
-                savedStore.getOpeningTime(),
-                savedStore.getClosedTime(),
-                savedStore.getMinOrderPrice()
-        );
+        return RegisterStoreResponse.from(savedStore);
     }
 
     @Transactional
@@ -79,19 +72,11 @@ public class StoreService {
         store.setAverageRating(averageRating);
         storeRepository.save(store);
 
-        List<MenuDto> menuDtoList=store.getMenuList().stream()
-                .map(menu-> new MenuDto(menu.getMenuName(),menu.getPrice()))
+        List<MenuReponse> menuList=store.getMenuList().stream()
+                .map(menu-> new MenuReponse(menu.getMenuName(),menu.getPrice()))
                 .collect(Collectors.toList());
 
-        return new StoreDetailResponse(
-                store.getName(),
-                store.getIntroduction(),
-                store.getOpeningTime(),
-                store.getClosedTime(),
-                store.getMinOrderPrice(),
-                store.getAverageRating(),
-                menuDtoList
-        );
+        return StoreDetailResponse.from(store,menuList);
     }
 
 
@@ -106,31 +91,27 @@ public class StoreService {
         }
 
         return stores.map(store->{
-            return new StoreResponse(
-                    store.getId(),
-                    store.getName(),
-                    store.getMinOrderPrice(),
-                    store.getAverageRating()
-            );
+            return StoreResponse.from(store);
         });
     }
 
     @Transactional
-    public UpdateStoreResponse updateStore(Long storeId, UpdateStoreRequest updateStoreRequest) {
+    public UpdateStoreResponse updateStore(Long userId,Long storeId, UpdateStoreRequest updateStoreRequest) {
+        //user가 존재하는 지 확인
+        User user=userRepository.findById(userId).orElseThrow(()->
+                new NotFoundException(NOT_FOUND_USER));
+
         Store store=storeRepository.findById(storeId).orElseThrow(()->
                 new NotFoundException(NOT_FOUND_STORE));
 
+        //user가 해당 owner인지 확인
+        if(user.getId()!= store.getUser().getId()){
+            throw new InvalidParameterException(INVALID_USER_AUTHORITY);
+        }
+
         store.update(updateStoreRequest);
 
-        return new UpdateStoreResponse(
-                store.getId(),
-                store.getName(),
-                store.getIntroduction(),
-                store.getOpeningTime(),
-                store.getClosedTime(),
-                store.getMinOrderPrice()
-        );
-
+        return UpdateStoreResponse.from(store);
     }
 
     @Transactional
@@ -139,9 +120,5 @@ public class StoreService {
                 new NotFoundException(NOT_FOUND_STORE));
 
         store.deleteStore();
-
     }
-
-
-
 }
