@@ -10,6 +10,7 @@ import com.century21.deliveryserviceapp.store.dto.request.RegisterStoreRequest;
 import com.century21.deliveryserviceapp.store.dto.request.UpdateStoreRequest;
 import com.century21.deliveryserviceapp.store.dto.response.StoreDetailResponse;
 import com.century21.deliveryserviceapp.store.dto.response.RegisterStoreResponse;
+import com.century21.deliveryserviceapp.store.dto.response.StoreResponse;
 import com.century21.deliveryserviceapp.store.dto.response.UpdateStoreResponse;
 import com.century21.deliveryserviceapp.store.repository.StoreRepository;
 import com.century21.deliveryserviceapp.user.repository.UserRepository;
@@ -65,6 +66,9 @@ public class StoreService {
             throw new NotFoundException(NOT_FOUND_STORE);
         }
 
+        //리뷰 평균 평점 계산하기
+        //double averageRating =reviewRepository.calculateAverageRating(storeId);
+
         return new StoreDetailResponse(
                 store.getName(),
                 store.getIntroduction(),
@@ -76,6 +80,25 @@ public class StoreService {
         );
     }
 
+    public Page<StoreResponse> getStores(String name, int pageSize, int pageNumber) {
+        Pageable pageable= PageRequest.of(pageNumber-1,pageSize);
+
+        Page<Store> stores;
+        if(name==null || name.isEmpty()){
+            stores=storeRepository.findAll(pageable);
+        }else{
+            stores=storeRepository.findByNameContaining(name,pageable);
+        }
+
+        return stores.map(store->{
+            return new StoreResponse(
+                    store.getId(),
+                    store.getName(),
+                    store.getMinOrderPrice(),
+                    store.getAverageRating()
+            );
+        });
+    }
 
     @Transactional
     public UpdateStoreResponse updateStore(Long storeId, UpdateStoreRequest updateStoreRequest) {
@@ -103,6 +126,7 @@ public class StoreService {
         store.deleteStore();
 
     }
+
 
 
 }

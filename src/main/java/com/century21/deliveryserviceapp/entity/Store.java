@@ -43,7 +43,7 @@ public class Store {
     @NotNull
     private int minOrderPrice;
 
-    @Formula("(SELECT AVG(r.rating) FROM review_tb r where r.store_id=id)")
+
     @Column(name = "average_rating")
     @NotNull
     private double averageRating;
@@ -55,7 +55,7 @@ public class Store {
     @JoinColumn(name = "owner_id", nullable = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Menu> menuList=new ArrayList<>();
 
 
