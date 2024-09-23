@@ -73,8 +73,8 @@ public class StoreService {
         store.setAverageRating(averageRating);
         storeRepository.save(store);
 
-        List<MenuReponse> menuList=store.getMenuList().stream()
-                .map(menu-> new MenuReponse(menu.getMenuName(),menu.getPrice()))
+        List<MenuResponse> menuList=store.getMenuList().stream()
+                .map(menu-> MenuResponse.from(menu))
                 .collect(Collectors.toList());
 
         return StoreDetailResponse.from(store,menuList);

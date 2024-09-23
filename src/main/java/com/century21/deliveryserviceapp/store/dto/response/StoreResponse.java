@@ -3,9 +3,11 @@ package com.century21.deliveryserviceapp.store.dto.response;
 import com.century21.deliveryserviceapp.entity.Store;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class StoreResponse {
     private Long storeId;
     private String storeName;
