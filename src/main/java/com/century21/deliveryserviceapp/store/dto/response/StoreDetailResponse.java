@@ -15,5 +15,5 @@ public class StoreDetailResponse {
     private LocalTime closedTime;
     private int minOrderPrice;
     private double averageRating;
-    private List<Menu> menuList;
+    private List<MenuDto> menuList;
 }
