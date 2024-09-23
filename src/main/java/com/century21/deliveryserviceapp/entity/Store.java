@@ -43,7 +43,6 @@ public class Store {
     @NotNull
     private int minOrderPrice;
 
-
     @Column(name = "average_rating")
     @NotNull
     private double averageRating;
@@ -81,6 +80,10 @@ public class Store {
 
     public void deleteStore() {
         this.deletedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void setAverageRating(Double averageRating){
+        this.averageRating=averageRating;
     }
 
     public void update(UpdateStoreRequest updateStoreRequest){

@@ -13,4 +13,10 @@ public class Review extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private int rating;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="store_id", nullable = false)
+    private Store store;
 }
