@@ -59,4 +59,8 @@ public class Menu {
         this.name = name;
         this.price = price;
     }
+
+    public void deleteMenu() {
+        this.deletedAt = LocalDateTime.now();
+    }
 }
