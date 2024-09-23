@@ -71,12 +71,19 @@ public class MenuService {
     public void deleteMenu(Long storeId, Long menuId) {
         // Store 정보 조회
         // TODO [MENU -> STORE]
-        storeRepository.findById(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
+        Store store = storeRepository.findById(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
 
         // Menu 정보 조회
-        menuRepository.findById(menuId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
+        Menu menu = menuRepository.findById(menuId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
+
+        // 사장님의 가게인지아닌지
+        // 1 = {userIdFromToken}
+        // TODO [OWNER Authorization Check]
+        if (store.getUser().getId() != 2) {
+            throw new UnauthorizedException(ResponseCode.INVALID_USER_AUTHORITY);
+        }
 
         // 메뉴 삭제
-        menuRepository.deleteById(menuId);
+        menu.deleteMenu();
     }
 }
