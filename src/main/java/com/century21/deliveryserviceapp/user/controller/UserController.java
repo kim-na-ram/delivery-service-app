@@ -4,6 +4,7 @@ import com.century21.deliveryserviceapp.common.exception.ApiException;
 import com.century21.deliveryserviceapp.common.exception.ResponseCode;
 import com.century21.deliveryserviceapp.common.response.ErrorResponse;
 import com.century21.deliveryserviceapp.common.response.SuccessResponse;
+import com.century21.deliveryserviceapp.user.auth.AuthUser;
 import com.century21.deliveryserviceapp.user.dto.request.LoginRequest;
 import com.century21.deliveryserviceapp.user.dto.request.SignUpRequest;
 import com.century21.deliveryserviceapp.user.dto.response.LoginResponse;

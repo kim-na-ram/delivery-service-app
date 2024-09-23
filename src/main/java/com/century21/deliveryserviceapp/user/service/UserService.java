@@ -11,9 +11,7 @@ import com.century21.deliveryserviceapp.user.dto.response.SignUpResponse;
 import com.century21.deliveryserviceapp.user.dto.response.UserResponse;
 import com.century21.deliveryserviceapp.user.jwt.JwtUtil;
 import com.century21.deliveryserviceapp.user.repository.UserRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +51,7 @@ public class UserService {
         );
         return new LoginResponse(accessToken);
     }
+
 
     // 테스트 실패
     // 회원정보 조회

@@ -1,5 +1,6 @@
 package com.century21.deliveryserviceapp.user.jwt;
 
+import com.century21.deliveryserviceapp.user.auth.AuthUser;
 import com.century21.deliveryserviceapp.user.dto.request.LoginRequest;
 import com.century21.deliveryserviceapp.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,22 +9,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.parser.Authorization;
+import org.springframework.core.annotation.Order;
 
 import java.io.IOException;
 
+import static com.century21.deliveryserviceapp.common.constant.Constant.AUTH_USER;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 
 
 @Slf4j
+@Order(1)
 public class JwtAuthenticationFilter implements Filter {
 
     private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserRepository userRepository) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -56,6 +58,9 @@ public class JwtAuthenticationFilter implements Filter {
         }
 
         // 토큰이 유효하면 필터 체인 계속 진행
+        AuthUser authUser = jwtUtil.getAuthUserFromToken(token);
+        request.setAttribute(AUTH_USER, authUser);
+
         chain.doFilter(request, response);
     }
 
