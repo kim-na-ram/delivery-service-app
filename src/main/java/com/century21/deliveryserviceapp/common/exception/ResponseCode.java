@@ -20,7 +20,7 @@ public enum ResponseCode {
 
 
     // 메뉴
-
+    NOT_FOUND_MENU("해당 메뉴는 존재하지 않습니다."),
 
     // 주문
 
