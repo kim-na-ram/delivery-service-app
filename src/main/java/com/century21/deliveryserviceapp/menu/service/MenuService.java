@@ -1,7 +1,6 @@
 package com.century21.deliveryserviceapp.menu.service;
 
 
-import com.century21.deliveryserviceapp.common.exception.ApiException;
 import com.century21.deliveryserviceapp.common.exception.NotFoundException;
 import com.century21.deliveryserviceapp.common.exception.ResponseCode;
 import com.century21.deliveryserviceapp.common.exception.UnauthorizedException;
@@ -12,7 +11,6 @@ import com.century21.deliveryserviceapp.menu.dto.response.MenuResponse;
 import com.century21.deliveryserviceapp.menu.repository.MenuRepository;
 import com.century21.deliveryserviceapp.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
