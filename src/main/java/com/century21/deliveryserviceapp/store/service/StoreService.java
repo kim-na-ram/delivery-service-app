@@ -122,4 +122,18 @@ public class StoreService {
 
         store.deleteStore();
     }
+
+
+    public StoreDetailResponse getStore(Long storeId) {
+        Store store=storeRepository.findById(storeId).orElseThrow(()->
+                new NotFoundException(NOT_FOUND_STORE));
+
+        return new StoreDetailResponse(
+                store.getName(),
+                store.getIntroduction(),
+                store.getOpeningTime(),
+                store.getClosedTime(),
+                store.getMinOrderPrice()
+        );
+    }
 }
