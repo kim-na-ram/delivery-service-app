@@ -8,15 +8,10 @@ import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor
-public class RegisterStoreRequest {
-    @NotBlank
+public class UpdateStoreRequest {
     private String storeName;
-    @NotBlank
     private String introduction;
-    @NotNull
     private LocalTime openingTime;
-    @NotNull
     private LocalTime closedTime;
-    @NotNull
     private Integer minOrderPrice;
 }
