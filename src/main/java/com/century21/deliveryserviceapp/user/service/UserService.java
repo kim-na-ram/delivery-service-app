@@ -44,8 +44,12 @@ public class UserService {
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
             throw ApiException.of(ResponseCode.INVALID_PASSWORD);
         }
-
-        String accessToken = jwtUtil.createToken(user.getEmail());
+        // JWT Access Token 생성 (userId, email, 권한)
+        String accessToken = jwtUtil.createAccessToken(
+                user.getId(),         // userId
+                user.getEmail(),      // email
+                user.getAuthority().name()  // 권한(Authority Enum을 문자열로 변환)
+        );
         return new LoginResponse(accessToken);
     }
 
