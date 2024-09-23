@@ -19,7 +19,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,7 +64,7 @@ public class StoreService {
         );
     }
 
-
+    @Transactional
     public StoreDetailResponse getStore(Long storeId) {
         Store store=storeRepository.findById(storeId).orElseThrow(()->
                 new NotFoundException(NOT_FOUND_STORE));
@@ -76,7 +75,9 @@ public class StoreService {
         }
 
         //리뷰 평균 평점 계산하기
-        //double averageRating =reviewRepository.calculateAverageRating(storeId);
+        double averageRating = reviewRepository.calculateAverageRating(storeId);
+        store.setAverageRating(averageRating);
+        storeRepository.save(store);
 
         List<MenuDto> menuDtoList=store.getMenuList().stream()
                 .map(menu-> new MenuDto(menu.getMenuName(),menu.getPrice()))

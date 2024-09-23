@@ -1,6 +1,5 @@
 package com.century21.deliveryserviceapp.store.dto.response;
 
-import com.century21.deliveryserviceapp.entity.Menu;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.time.LocalTime;
