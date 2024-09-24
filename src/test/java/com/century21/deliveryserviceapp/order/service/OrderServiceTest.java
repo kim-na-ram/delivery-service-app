@@ -289,7 +289,8 @@ class OrderServiceTest {
             long orderId = 1L;
             AuthUser user = AuthUserMockUtil.userAuth();
 
-            given(orderRepository.findByIdAndUserId(anyLong(), anyLong())).willReturn(Optional.empty());
+            given(orderRepository.findByOrderIdAndUserId(anyLong(), anyLong()))
+                    .willThrow(new NotFoundException(NOT_FOUND_ORDER));
 
             // when
             Throwable t = assertThrows(NotFoundException.class, () -> orderService.getOrder(user, orderId));
@@ -307,7 +308,7 @@ class OrderServiceTest {
 
             Order order = OrderMockDataUtil.order();
 
-            given(orderRepository.findByIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(order));
+            given(orderRepository.findByOrderIdAndUserId(anyLong(), anyLong())).willReturn(order);
 
             // when
             OrderResponse orderResponse = orderService.getOrder(user, orderId);
