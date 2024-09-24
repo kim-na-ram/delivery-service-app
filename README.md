@@ -9,7 +9,7 @@
 #### [👤 Ahn-donghwan](https://github.com/Ahn-donghwan)
 <br/><br />
 
-## 🏗️프로젝트 설계
+## ⚙️ 프로젝트 설계
 ### 와이어 프레임 
 #### [피그마 링크](https://www.figma.com/board/Fo0kF0xJZH1dkS87RF3ho3/Untitled?node-id=0-1&node-type=canvas)
 <br/></br>
@@ -27,7 +27,7 @@
 ![image](https://github.com/user-attachments/assets/c35290b7-3bab-402e-a1d5-6fa332066a5a)
 <br/></br>
 
-## ⚒️ 프로젝트 기능 정리
+## 📌 프로젝트 기능 정리
 ### 회원
 회원가입 및 로그인
 
