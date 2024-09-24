@@ -1,6 +1,7 @@
 package com.century21.deliveryserviceapp.common.exception;
 
 import com.century21.deliveryserviceapp.common.response.ErrorResponse;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,14 @@ public class GlobalExceptionHandler {
                 .toList();
 
         ErrorResponse errorResponse = ErrorResponse.of(httpStatus.value(), fieldErrorList.toString());
+        return new ResponseEntity<>(errorResponse, httpStatus);
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public ResponseEntity<?> handlerFolderNotFoundException(ConstraintViolationException exception) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        ErrorResponse errorResponse = ErrorResponse.of(httpStatus.value(), exception.getMessage());
         return new ResponseEntity<>(errorResponse, httpStatus);
     }
 }
