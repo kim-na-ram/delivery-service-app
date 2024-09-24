@@ -22,9 +22,11 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column
     @NotNull
     private String name;
+
     private int price;
 
     @ManyToOne(fetch = FetchType.LAZY)

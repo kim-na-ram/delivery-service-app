@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+
 import static com.century21.deliveryserviceapp.common.exception.ResponseCode.NOT_FOUND_STORE;
+
 
 @Repository
 public interface StoreRepository extends JpaRepository<Store, Long> {

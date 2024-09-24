@@ -1,10 +1,8 @@
 package com.century21.deliveryserviceapp.store.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
+import lombok.AllArgsConstructor;
 import java.time.LocalTime;
 
 @Getter
