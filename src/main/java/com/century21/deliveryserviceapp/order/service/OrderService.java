@@ -1,6 +1,5 @@
 package com.century21.deliveryserviceapp.order.service;
 
-import com.century21.deliveryserviceapp.user.auth.AuthUser;
 import com.century21.deliveryserviceapp.common.enums.Authority;
 import com.century21.deliveryserviceapp.common.exception.InvalidParameterException;
 import com.century21.deliveryserviceapp.common.exception.NotFoundException;
@@ -19,6 +18,7 @@ import com.century21.deliveryserviceapp.order.enums.OrderStatus;
 import com.century21.deliveryserviceapp.order.enums.PaymentMethod;
 import com.century21.deliveryserviceapp.order.repository.OrderRepository;
 import com.century21.deliveryserviceapp.store.repository.StoreRepository;
+import com.century21.deliveryserviceapp.user.auth.AuthUser;
 import com.century21.deliveryserviceapp.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,7 +40,7 @@ public class OrderService {
 
     public OrderResponse saveOrder(AuthUser authUser, OrderRequest orderRequest) {
         // 사용자만 주문 가능
-        if (authUser.getAuthority() == Authority.OWNER) {
+        if (checkAuthority(authUser.getAuthority(), Authority.USER)) {
             throw new UnauthorizedException(UNAUTHORIZED_ORDER);
         }
 
@@ -70,7 +70,7 @@ public class OrderService {
     public List<OrderListResponse> getOrderList(AuthUser authUser) {
         List<OrderListResponse> orderList;
 
-        if (authUser.getAuthority().equals(Authority.OWNER)) {
+        if (checkAuthority(authUser.getAuthority(), Authority.OWNER)) {
             orderList = OrderListResponse.from(orderRepository.findAllByOwnerId(authUser.getUserId()));
         } else {
             orderList = OrderListResponse.from(orderRepository.findAllByUserId(authUser.getUserId()));
@@ -83,7 +83,7 @@ public class OrderService {
     public OrderResponse getOrder(AuthUser authUser, long orderId) {
         Order order;
 
-        if (authUser.getAuthority().equals(Authority.OWNER)) {
+        if (checkAuthority(authUser.getAuthority(), Authority.OWNER)) {
             order = orderRepository.findByIdAndOwnerId(orderId, authUser.getUserId())
                     .orElseThrow(() -> new NotFoundException(NOT_FOUND_ORDER));
         } else {
@@ -96,7 +96,7 @@ public class OrderService {
 
     public OrderResponse changeOrderStatus(AuthUser authUser, long orderId, ChangeOrderStatusRequest changeOrderStatusRequest) {
         // 사장님만 주문 상태 변경 가능
-        if (authUser.getAuthority() != Authority.OWNER) {
+        if (checkAuthority(authUser.getAuthority(), Authority.OWNER)) {
             throw new UnauthorizedException(ResponseCode.UNAUTHORIZED_CHANGE_ORDER_STATUS);
         }
 
@@ -118,7 +118,7 @@ public class OrderService {
         // 주문 확인
         Order order;
 
-        if (authUser.getAuthority().equals(Authority.OWNER)) {
+        if (checkAuthority(authUser.getAuthority(), Authority.OWNER)) {
             order = findOrderWithOwnerId(orderId, authUser.getUserId());
         } else {
             order = findOrderWithUserId(orderId, authUser.getUserId());
@@ -132,6 +132,16 @@ public class OrderService {
         Order savedOrder = orderRepository.save(order);
 
         return OrderResponse.from(savedOrder);
+    }
+
+    /**
+     * 권한 확인
+     *
+     * @param authorityName 현재 유저의 권한
+     * @param authority     비교하고자 하는 권한
+     */
+    private boolean checkAuthority(String authorityName, Authority authority) {
+        return authorityName.equals(authority.name());
     }
 
     /**
@@ -178,10 +188,10 @@ public class OrderService {
      * @param orderStatus 현재 주문 상태
      * @param authority   요청한 유저의 권한
      */
-    private void checkIsPossibleToCancelOrder(OrderStatus orderStatus, Authority authority) {
+    private void checkIsPossibleToCancelOrder(OrderStatus orderStatus, String authority) {
         if (orderStatus.equals(OrderStatus.PENDING_ACCEPTANCE)) return;
 
-        if (authority.equals(Authority.OWNER)) {
+        if (checkAuthority(authority, Authority.OWNER)) {
             throw new InvalidParameterException(ResponseCode.INVALID_CANCEL_ORDER_FOR_OWNER);
         } else {
             throw new InvalidParameterException(ResponseCode.INVALID_CANCEL_ORDER_FOR_USER);
