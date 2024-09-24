@@ -116,9 +116,18 @@ public class StoreService {
     }
 
     @Transactional
-    public void deleteStore(Long storeId) {
+    public void deleteStore(Long userId,Long storeId) {
+        //user가 해당 owner인지 확인
+        //user가 존재하는 지 확인
+        User user=userRepository.findById(userId).orElseThrow(()->
+                new NotFoundException(NOT_FOUND_USER));
+
         Store store=storeRepository.findById(storeId).orElseThrow(()->
                 new NotFoundException(NOT_FOUND_STORE));
+
+        if(user.getId()!= store.getUser().getId()){
+            throw new InvalidParameterException(INVALID_USER_AUTHORITY);
+        }
 
         store.deleteStore();
     }

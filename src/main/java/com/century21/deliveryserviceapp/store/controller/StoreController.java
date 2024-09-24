@@ -53,8 +53,8 @@ public class StoreController {
 
     //가게 폐업
     @DeleteMapping("/{storeId}")
-    public ResponseEntity<SuccessResponse<Void>> deleteStore(@PathVariable("storeId") Long storeId){
-        storeService.deleteStore(storeId);
+    public ResponseEntity<SuccessResponse<Void>> deleteStore(@Auth AuthUser authUser, @PathVariable("storeId") Long storeId){
+        storeService.deleteStore(authUser.getUserId(),storeId);
         return ResponseEntity.ok(SuccessResponse.of(null));
     }
 }
