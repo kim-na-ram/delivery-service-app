@@ -40,7 +40,7 @@ public class OrderService {
 
     public OrderResponse saveOrder(AuthUser authUser, OrderRequest orderRequest) {
         // 사용자만 주문 가능
-        if (checkAuthority(authUser.getAuthority(), Authority.USER)) {
+        if (!checkAuthority(authUser.getAuthority(), Authority.USER)) {
             throw new UnauthorizedException(UNAUTHORIZED_ORDER);
         }
 
@@ -96,7 +96,7 @@ public class OrderService {
 
     public OrderResponse changeOrderStatus(AuthUser authUser, long orderId, ChangeOrderStatusRequest changeOrderStatusRequest) {
         // 사장님만 주문 상태 변경 가능
-        if (checkAuthority(authUser.getAuthority(), Authority.OWNER)) {
+        if (!checkAuthority(authUser.getAuthority(), Authority.OWNER)) {
             throw new UnauthorizedException(ResponseCode.UNAUTHORIZED_CHANGE_ORDER_STATUS);
         }
 
