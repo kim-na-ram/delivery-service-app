@@ -34,7 +34,6 @@ public enum ResponseCode {
 
     // 메뉴
     NOT_FOUND_MENU("해당 메뉴는 존재하지 않습니다."),
-    UNAUTHORIZED_SAVE_MENU_STATUS("메뉴 등록은 "),
 
 
     // 주문
