@@ -1,5 +1,6 @@
 package com.century21.deliveryserviceapp.store.controller;
 
+import com.century21.deliveryserviceapp.common.annotaion.Auth;
 import com.century21.deliveryserviceapp.common.response.SuccessResponse;
 import com.century21.deliveryserviceapp.store.dto.request.RegisterStoreRequest;
 import com.century21.deliveryserviceapp.store.dto.request.UpdateStoreRequest;
@@ -8,6 +9,7 @@ import com.century21.deliveryserviceapp.store.dto.response.RegisterStoreResponse
 import com.century21.deliveryserviceapp.store.dto.response.StoreResponse;
 import com.century21.deliveryserviceapp.store.dto.response.UpdateStoreResponse;
 import com.century21.deliveryserviceapp.store.service.StoreService;
+import com.century21.deliveryserviceapp.user.auth.AuthUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,9 +24,9 @@ public class StoreController {
     private final StoreService storeService;
 
     //가게 등록
-    @PostMapping("/{userId}")
-    public ResponseEntity<SuccessResponse<RegisterStoreResponse>> registerStore(@PathVariable("userId") Long userId, @RequestBody @Valid RegisterStoreRequest registerStoreRequest){
-        return ResponseEntity.ok(SuccessResponse.of(storeService.registerStore(userId,registerStoreRequest)));
+    @PostMapping()
+    public ResponseEntity<SuccessResponse<RegisterStoreResponse>> registerStore(@Auth AuthUser authUser, @RequestBody @Valid RegisterStoreRequest registerStoreRequest){
+        return ResponseEntity.ok(SuccessResponse.of(storeService.registerStore(authUser.getUserId(),registerStoreRequest)));
     }
 
     //가게 단건 조회
@@ -44,9 +46,9 @@ public class StoreController {
     }
 
     //가게 수정
-    @PatchMapping("/{storeId}/{userId}")
-    public ResponseEntity<SuccessResponse<UpdateStoreResponse>> updateStore(@PathVariable("userId") Long userId,@PathVariable("storeId") Long storeId, @RequestBody UpdateStoreRequest updateStoreRequest){
-        return ResponseEntity.ok(SuccessResponse.of(storeService.updateStore(userId,storeId,updateStoreRequest)));
+    @PatchMapping("/{storeId}")
+    public ResponseEntity<SuccessResponse<UpdateStoreResponse>> updateStore(@Auth AuthUser authUser,@PathVariable("storeId") Long storeId, @RequestBody UpdateStoreRequest updateStoreRequest){
+        return ResponseEntity.ok(SuccessResponse.of(storeService.updateStore(authUser.getUserId(),storeId,updateStoreRequest)));
     }
 
     //가게 폐업
