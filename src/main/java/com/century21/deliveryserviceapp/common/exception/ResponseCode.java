@@ -35,6 +35,7 @@ public enum ResponseCode {
     // 메뉴
     NOT_FOUND_MENU("해당 메뉴는 존재하지 않습니다."),
 
+
     // 주문
     NOT_FOUND_ORDER("해당 주문은 존재하지 않습니다."),
     UNAUTHORIZED_ORDER("주문은 사용자만 가능합니다."),
