@@ -6,6 +6,7 @@ import com.century21.deliveryserviceapp.common.exception.InvalidParameterExcepti
 import com.century21.deliveryserviceapp.common.exception.NotFoundException;
 import com.century21.deliveryserviceapp.common.exception.ResponseCode;
 import com.century21.deliveryserviceapp.entity.User;
+import com.century21.deliveryserviceapp.token.service.TokenService;
 import com.century21.deliveryserviceapp.user.dto.request.LoginRequest;
 import com.century21.deliveryserviceapp.user.dto.request.SignUpRequest;
 import com.century21.deliveryserviceapp.user.dto.response.LoginResponse;
@@ -17,10 +18,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.century21.deliveryserviceapp.common.constant.Constant.ACCESS_TOKEN_EXPIRE_TIME;
+import static com.century21.deliveryserviceapp.common.constant.Constant.REFRESH_TOKEN_EXPIRE_TIME;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
+    private final TokenService tokenService;
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -46,16 +52,24 @@ public class UserService {
             throw new InvalidParameterException(ResponseCode.INVALID_PASSWORD);
         }
         // JWT Access Token 생성 (userId, email, 권한)
-        String accessToken = jwtUtil.createAccessToken(
-                user.getId(),         // userId
-                user.getEmail(),      // email
-                user.getAuthority().name()  // 권한(Authority Enum을 문자열로 변환)
+        String accessToken = jwtUtil.createToken(
+                user.getId(),                   // userId
+                user.getAuthority().name(),     // 권한(Authority Enum을 문자열로 변환)
+                ACCESS_TOKEN_EXPIRE_TIME
         );
-        return new LoginResponse(accessToken);
+
+        String refreshToken = jwtUtil.createToken(
+                user.getId(),
+                user.getAuthority().name(),
+                REFRESH_TOKEN_EXPIRE_TIME
+        );
+
+        tokenService.saveToken(accessToken, refreshToken);
+
+        return LoginResponse.of(accessToken);
     }
 
 
-    // 테스트 실패
     // 회원정보 조회
     @Transactional(readOnly = true)
     public UserResponse getUserInfo(Long userId) {
@@ -65,7 +79,6 @@ public class UserService {
         return new UserResponse(user.getId(), user.getEmail(), user.getNickname(), user.getAuthority().name());
     }
 
-    // 테스트 실패
     // 회원 탈퇴 (soft delete)
     @Transactional
     public void deleteUser(Long userId, String password) {
