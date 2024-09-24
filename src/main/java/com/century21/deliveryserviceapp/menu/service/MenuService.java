@@ -10,6 +10,7 @@ import com.century21.deliveryserviceapp.menu.dto.request.MenuRequest;
 import com.century21.deliveryserviceapp.menu.dto.response.MenuResponse;
 import com.century21.deliveryserviceapp.menu.repository.MenuRepository;
 import com.century21.deliveryserviceapp.store.repository.StoreRepository;
+import com.century21.deliveryserviceapp.user.auth.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +23,15 @@ public class MenuService {
     private final MenuRepository menuRepository;
     private final StoreRepository storeRepository;
 
-    // 메뉴 생성 ( 토큰 필요 )
-    // 사장님은 본인 가게에만 메뉴를 등록할 수 있습니다.
+
     @Transactional
-    public MenuResponse saveMenu(Long storeId, MenuRequest menuRequest) {
+    public MenuResponse saveMenu(AuthUser authUser, Long storeId, MenuRequest menuRequest) {
 
         // Store 정보 조회
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_STORE));
 
-        // TODO [OWNER Authorization Check]
-        if (store.getUser().getId() != 2) {
+        // 사장님의 본인 가게인지 확인
+        if (!store.getUser().getId().equals(authUser.getUserId())) {
             throw new UnauthorizedException(ResponseCode.INVALID_USER_AUTHORITY);
         }
 
@@ -42,7 +42,7 @@ public class MenuService {
     }
 
     @Transactional
-    public MenuResponse updateMenu(Long storeId, Long menuId, MenuRequest menuRequest) {
+    public MenuResponse updateMenu(AuthUser authUser, Long storeId, Long menuId, MenuRequest menuRequest) {
 
         // Store 정보 조회
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_STORE));
@@ -50,10 +50,8 @@ public class MenuService {
         // Menu 정보 조회
         Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
 
-        // 사장님의 가게인지아닌지
-        // 1 = {userIdFromToken}
-        // TODO [OWNER Authorization Check]
-        if (store.getUser().getId() != 2) {
+        // 사장님의 본인 가게인지 확인
+        if (!store.getUser().getId().equals(authUser.getUserId())) {
             throw new UnauthorizedException(ResponseCode.INVALID_USER_AUTHORITY);
         }
 
@@ -64,17 +62,15 @@ public class MenuService {
     }
 
     @Transactional
-    public void deleteMenu(Long storeId, Long menuId) {
+    public void deleteMenu(AuthUser authUser, Long storeId, Long menuId) {
         // Store 정보 조회
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_STORE));
 
         // Menu 정보 조회
         Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
 
-        // 사장님의 가게인지아닌지
-        // 1 = {userIdFromToken}
-        // TODO [OWNER Authorization Check]
-        if (store.getUser().getId() != 2) {
+        // 사장님의 본인 가게인지 확인
+        if (!store.getUser().getId().equals(authUser.getUserId())) {
             throw new UnauthorizedException(ResponseCode.INVALID_USER_AUTHORITY);
         }
 
