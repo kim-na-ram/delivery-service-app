@@ -1,5 +1,6 @@
 package com.century21.deliveryserviceapp.store.repository;
 
+import com.century21.deliveryserviceapp.common.exception.NotFoundException;
 import com.century21.deliveryserviceapp.entity.Store;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+
+
+import static com.century21.deliveryserviceapp.common.exception.ResponseCode.NOT_FOUND_STORE;
+
 
 @Repository
 public interface StoreRepository extends JpaRepository<Store, Long> {
@@ -21,4 +26,11 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Page<Store> findByDeletedAtIsNull(Pageable pageable);
 
     Optional<Store> findByIdAndDeletedAtIsNull(Long storeId);
+
+    Optional<Store> findByIdAndDeletedAtIsNull(long id);
+
+    default Store findByStoreId(long storeId) {
+        return findByIdAndDeletedAtIsNull(storeId)
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_STORE));
+    }
 }

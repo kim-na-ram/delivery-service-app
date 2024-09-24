@@ -21,14 +21,12 @@ public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String menuName;
 
-    private int price;
-
-    private String name;
 
     @Column
     @NotNull
+    private String name;
+
     private int price;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -66,4 +64,5 @@ public class Menu {
     public void deleteMenu() {
         this.deletedAt = LocalDateTime.now();
     }
+
 }

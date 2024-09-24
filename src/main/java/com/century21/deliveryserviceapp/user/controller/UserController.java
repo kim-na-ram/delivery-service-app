@@ -1,10 +1,8 @@
 package com.century21.deliveryserviceapp.user.controller;
 
 import com.century21.deliveryserviceapp.common.exception.ApiException;
-import com.century21.deliveryserviceapp.common.exception.ResponseCode;
 import com.century21.deliveryserviceapp.common.response.ErrorResponse;
 import com.century21.deliveryserviceapp.common.response.SuccessResponse;
-import com.century21.deliveryserviceapp.user.auth.AuthUser;
 import com.century21.deliveryserviceapp.user.dto.request.LoginRequest;
 import com.century21.deliveryserviceapp.user.dto.request.SignUpRequest;
 import com.century21.deliveryserviceapp.user.dto.response.LoginResponse;
@@ -12,7 +10,6 @@ import com.century21.deliveryserviceapp.user.dto.response.SignUpResponse;
 import com.century21.deliveryserviceapp.user.dto.response.UserResponse;
 import com.century21.deliveryserviceapp.user.service.UserService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +34,7 @@ public class UserController {
             SignUpResponse signUpResponseDto = userService.register(signUpRequestDto);
             return ResponseEntity.ok(SuccessResponse.of(signUpResponseDto));
         } catch (ApiException e) {
-            return ResponseEntity.status(e.getCode()).body(ErrorResponse.of(e.getCode(), e.getMessage()));
+            return ResponseEntity.status(e.getHttpStatus()).body(ErrorResponse.of(e.getHttpStatus().value(), e.getMessage()));
         }
     }
 
@@ -48,7 +45,7 @@ public class UserController {
             LoginResponse loginResponseDto = userService.login(loginRequestDto);
             return ResponseEntity.ok(SuccessResponse.of(loginResponseDto));
         } catch (ApiException e) {
-            return ResponseEntity.status(e.getCode()).body(ErrorResponse.of(e.getCode(), e.getMessage()));
+            return ResponseEntity.status(e.getHttpStatus()).body(ErrorResponse.of(e.getHttpStatus().value(), e.getMessage()));
         }
     }
 
@@ -59,7 +56,7 @@ public class UserController {
             UserResponse userResponseDto = userService.getUserInfo(userId);
             return ResponseEntity.ok(SuccessResponse.of(userResponseDto));
         } catch (ApiException e) {
-            return ResponseEntity.status(e.getCode()).body(ErrorResponse.of(e.getCode(), e.getMessage()));
+            return ResponseEntity.status(e.getHttpStatus()).body(ErrorResponse.of(e.getHttpStatus().value(), e.getMessage()));
         }
     }
 
@@ -70,7 +67,7 @@ public class UserController {
             userService.deleteUser(userId, password);
             return ResponseEntity.ok(SuccessResponse.of(null));
         } catch (ApiException e) {
-            return ResponseEntity.status(e.getCode()).body(ErrorResponse.of(e.getCode(), e.getMessage()));
+            return ResponseEntity.status(e.getHttpStatus()).body(ErrorResponse.of(e.getHttpStatus().value(), e.getMessage()));
         }
     }
 }

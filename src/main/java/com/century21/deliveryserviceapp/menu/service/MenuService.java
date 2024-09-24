@@ -66,8 +66,7 @@ public class MenuService {
     @Transactional
     public void deleteMenu(Long storeId, Long menuId) {
         // Store 정보 조회
-        // TODO [MENU -> STORE]
-        Store store = storeRepository.findById(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
+        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_STORE));
 
         // Menu 정보 조회
         Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_MENU));
