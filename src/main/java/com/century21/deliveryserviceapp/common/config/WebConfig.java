@@ -1,6 +1,6 @@
 package com.century21.deliveryserviceapp.common.config;
 
-import com.century21.deliveryserviceapp.user.auth.AuthUserArgumentResolver;
+import com.century21.deliveryserviceapp.common.config.filter.AuthUserArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

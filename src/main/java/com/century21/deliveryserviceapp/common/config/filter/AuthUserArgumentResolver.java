@@ -1,7 +1,7 @@
-package com.century21.deliveryserviceapp.user.auth;
+package com.century21.deliveryserviceapp.common.config.filter;
 
 import com.century21.deliveryserviceapp.common.annotaion.Auth;
-import com.century21.deliveryserviceapp.user.jwt.JwtUtil;
+import com.century21.deliveryserviceapp.user.auth.AuthUser;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,6 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
         return parameter.getParameterAnnotation(Auth.class) != null
                 && parameter.getParameterType().equals(AuthUser.class);
     }
-
 
     @Override
     public Object resolveArgument(@Nullable MethodParameter parameter,
