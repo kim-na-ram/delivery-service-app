@@ -51,7 +51,12 @@ public enum ResponseCode {
     INVALID_CANCEL_ORDER_FOR_OWNER("주문 취소는 주문을 수락하기 전에만 가능합니다."),
 
     // 리뷰
-
+    NOT_FOUND_REVIEW("해당 리뷰는 존재하지 않습니다."),
+    UNAUTHORIZED_REVIEW("리뷰 등록은 사용자만 가능합니다."),
+    DUPLICATED_REVIEW("리뷰는 주문 한 건당 한 번만 작성 가능합니다."),
+    INVALID_REGISTER_REVIEW_NOT_DELIVERED_ORDER("배달완료된 주문에 한해서만 리뷰 작성이 가능합니다."),
+    INVALID_REGISTER_REVIEW_AFTER_3_DAYS("리뷰는 배달완료 후 3일 이내에만 작성이 가능합니다."),
+    INVALID_RATING_RANGE_MAX_UNDER_MIN("별점 범위는 최댓값이 최솟값보다 작을 수 없습니다."),
 
     ;
 
