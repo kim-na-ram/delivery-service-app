@@ -11,7 +11,7 @@ public class MenuResponse {
     private int price;
 
     public static MenuResponse from(Menu menu){
-        return new MenuResponse(menu.getMenuName(),menu.getPrice());
+        return new MenuResponse(menu.getName(),menu.getPrice());
     }
 
 }
