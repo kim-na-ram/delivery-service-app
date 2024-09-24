@@ -1,5 +1,6 @@
 package com.century21.deliveryserviceapp.user.auth;
 
+import com.century21.deliveryserviceapp.common.annotaion.Auth;
 import com.century21.deliveryserviceapp.user.jwt.JwtUtil;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,8 +22,9 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        // 컨트롤러 메서드 파라미터에 AuthUser 타입이 있는 경우 처리
-        return parameter.getParameterType().equals(AuthUser.class);
+        // 컨트롤러 메서드 파라미터에 Auth 어노테이션과 AuthUser 타입이 있을 경우 처리
+        return parameter.getParameterAnnotation(Auth.class) != null
+                && parameter.getParameterType().equals(AuthUser.class);
     }
 
 
