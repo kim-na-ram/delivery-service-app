@@ -29,7 +29,6 @@ public class UserController {
     }
 
     // 회원가입
-
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequestDto) {
         try {

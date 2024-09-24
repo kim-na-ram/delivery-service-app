@@ -27,6 +27,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StoreController.class)
@@ -134,8 +135,9 @@ class StoreControllerTest {
     @Test
     public void 가게_폐업() throws Exception {
         //given
+        long userId=3L;
         long storeId = 1L;
-        doNothing().when(storeService).deleteStore(anyLong());
+        doNothing().when(storeService).deleteStore(anyLong(),anyLong());
         //when
         ResultActions resultActions = mockMvc.perform(delete("/api/stores/{storeId}", storeId));
         //then
