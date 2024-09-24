@@ -68,11 +68,6 @@ public class StoreService {
             throw new NotFoundException(NOT_FOUND_STORE);
         }
 
-        //리뷰 평균 평점 계산하기
-        double averageRating = reviewRepository.calculateAverageRating(storeId);
-        store.setAverageRating(averageRating);
-        storeRepository.save(store);
-
         List<MenuResponse> menuList=store.getMenuList().stream()
                 .map(menu-> MenuResponse.from(menu))
                 .collect(Collectors.toList());
