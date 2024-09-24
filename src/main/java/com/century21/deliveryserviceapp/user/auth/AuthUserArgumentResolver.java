@@ -13,13 +13,12 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import static com.century21.deliveryserviceapp.common.constant.Constant.AUTH_USER;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
-
-    private final JwtUtil jwtUtil;
-
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         // 컨트롤러 메서드 파라미터에 Auth 어노테이션과 AuthUser 타입이 있을 경우 처리
@@ -37,16 +36,7 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
 
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
 
-        // Authorization 헤더에서 토큰 추출
-        String token = jwtUtil.resolveToken(request.getHeader(JwtUtil.AUTH_ACCESS_HEADER));
-
-        if (token != null && jwtUtil.validateToken(token)) {
-            log.info("JWT 토큰이 유효합니다. AuthUser 생성.");
-            // 토큰에서 AuthUser 객체 추출
-            return jwtUtil.getAuthUserFromToken(token);
-        }
-
-        log.warn("유효하지 않은 JWT 토큰입니다.");
-        return null;  // 유효하지 않은 경우 null 반환
+        AuthUser authUser = (AuthUser) request.getAttribute(AUTH_USER);
+        return authUser;
     }
 }
