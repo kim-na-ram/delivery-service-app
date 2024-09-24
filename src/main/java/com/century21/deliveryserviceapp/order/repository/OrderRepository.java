@@ -20,7 +20,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "WHERE o.id = ?1 AND s.user.id = ?2 AND o.deletedAt IS NULL")
     Optional<Order> findActiveOrderByIdAndOwnerId(long id, long ownerId);
 
-    @Query("SELECT o FROM Order o JOIN Store s ON o.store.id = s.id WHERE s.user.id = ?1 ORDER BY o.createdAt")
+    @Query("SELECT o FROM Order o JOIN Store s ON o.store.id = s.id WHERE s.user.id = ?1 ORDER BY o.createdAt DESC")
     List<Order> findAllByOwnerId(long ownerId);
 
     Optional<Order> findByIdAndUserId(Long id, long userId);
@@ -29,8 +29,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "WHERE o.id = ?1 AND o.user.id = ?2 AND o.deletedAt IS NULL")
     Optional<Order> findActiveOrderByIdAndUserId(Long id, long userId);
 
-    @Query("FROM Order o JOIN Store s ON o.store.id = s.id WHERE s.user.id = ?1 ORDER BY o.createdAt")
+    @Query("FROM Order o JOIN Store s ON o.store.id = s.id WHERE o.user.id = ?1 ORDER BY o.createdAt DESC")
     List<Order> findAllByUserId(long userId);
+
+    default Order findByOrderIdAndUserId(long orderId, long userId) {
+        return findByIdAndUserId(orderId, userId)
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_ORDER));
+    }
 
     default Order findByOrderId(long orderId) {
         return findByIdAndDeletedAtIsNull(orderId)

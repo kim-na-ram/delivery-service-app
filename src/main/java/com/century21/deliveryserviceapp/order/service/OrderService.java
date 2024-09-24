@@ -87,8 +87,7 @@ public class OrderService {
             order = orderRepository.findByIdAndOwnerId(orderId, authUser.getUserId())
                     .orElseThrow(() -> new NotFoundException(NOT_FOUND_ORDER));
         } else {
-            order = orderRepository.findByIdAndUserId(orderId, authUser.getUserId())
-                    .orElseThrow(() -> new NotFoundException(NOT_FOUND_ORDER));
+            order = orderRepository.findByOrderIdAndUserId(orderId, authUser.getUserId());
         }
 
         return OrderResponse.from(order);
