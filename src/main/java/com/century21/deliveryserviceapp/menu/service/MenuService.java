@@ -1,6 +1,7 @@
 package com.century21.deliveryserviceapp.menu.service;
 
 
+import com.century21.deliveryserviceapp.common.enums.Authority;
 import com.century21.deliveryserviceapp.common.exception.NotFoundException;
 import com.century21.deliveryserviceapp.common.exception.ResponseCode;
 import com.century21.deliveryserviceapp.common.exception.UnauthorizedException;
@@ -26,6 +27,10 @@ public class MenuService {
 
     @Transactional
     public MenuResponse saveMenu(AuthUser authUser, Long storeId, MenuRequest menuRequest) {
+        // 사장님 권한 확인
+        if (!authUser.getAuthority().equals(Authority.OWNER.name())) {
+            throw new UnauthorizedException(ResponseCode.INVALID_USER_AUTHORITY);
+        }
 
         // Store 정보 조회
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_STORE));
@@ -43,6 +48,10 @@ public class MenuService {
 
     @Transactional
     public MenuResponse updateMenu(AuthUser authUser, Long storeId, Long menuId, MenuRequest menuRequest) {
+        // 사장님 권한 확인
+        if (!authUser.getAuthority().equals(Authority.OWNER.name())) {
+            throw new UnauthorizedException(ResponseCode.INVALID_USER_AUTHORITY);
+        }
 
         // Store 정보 조회
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_STORE));
@@ -63,6 +72,11 @@ public class MenuService {
 
     @Transactional
     public void deleteMenu(AuthUser authUser, Long storeId, Long menuId) {
+        // 사장님 권한 확인
+        if (!authUser.getAuthority().equals(Authority.OWNER.name())) {
+            throw new UnauthorizedException(ResponseCode.INVALID_USER_AUTHORITY);
+        }
+
         // Store 정보 조회
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId).orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND_STORE));
 
