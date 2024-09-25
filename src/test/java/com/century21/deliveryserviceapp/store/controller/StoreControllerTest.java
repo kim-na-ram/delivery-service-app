@@ -17,6 +17,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -25,11 +27,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.time.LocalTime;
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -103,8 +107,9 @@ class StoreControllerTest {
     @Test
     public void 가게_리스트_조회() throws Exception {
         //given
-        StoreResponse storeResponse = new StoreResponse();
-        Page<StoreResponse> pageResponse = new PageImpl<>(Collections.singletonList(storeResponse));
+        StoreResponse storeResponse=new StoreResponse();
+        Pageable pageable= PageRequest.of(0,10);
+        Page<StoreResponse> pageResponse = new PageImpl<>(List.of(storeResponse), pageable,0);
         given(storeService.getStores(anyString(), anyInt(), anyInt())).willReturn(pageResponse);
 
         //when
@@ -113,7 +118,7 @@ class StoreControllerTest {
                 .param("pageSize", "10")
                 .param("pageNumber", "1"));
         //then
-
+        resultActions.andDo(print());
         resultActions.andExpect(status().isOk());
 
     }
