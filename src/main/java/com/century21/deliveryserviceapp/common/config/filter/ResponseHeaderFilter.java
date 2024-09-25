@@ -24,7 +24,7 @@ public class ResponseHeaderFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        String accessToken = request.getAttribute(AUTHORIZATION).toString();
+        String accessToken = (String) request.getAttribute(AUTHORIZATION);
 
         if (!Strings.isBlank(accessToken)) {
             response.setHeader(AUTHORIZATION, accessToken);
