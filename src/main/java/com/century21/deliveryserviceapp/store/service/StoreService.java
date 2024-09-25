@@ -33,10 +33,10 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
-    private final ReviewRepository reviewRepository;
 
     @Transactional
     public RegisterStoreResponse registerStore(Long userId,RegisterStoreRequest registerStoreRequest) {
+
         //user가 존재하는 지 확인
         User user=userRepository.findById(userId).orElseThrow(()->
                 new NotFoundException(NOT_FOUND_USER));
@@ -51,7 +51,6 @@ public class StoreService {
         if(storeCount>=3){
             throw new ForbiddenException(MAX_STORE_LIMIT);
         }
-
 
         Store newStore=Store.from(user,registerStoreRequest);
         Store savedStore=storeRepository.save(newStore);
@@ -92,6 +91,8 @@ public class StoreService {
         });
     }
 
+
+
     @Transactional
     public UpdateStoreResponse updateStore(Long userId,Long storeId, UpdateStoreRequest updateStoreRequest) {
         //user가 존재하는 지 확인
@@ -101,7 +102,7 @@ public class StoreService {
         Store store=storeRepository.findByIdAndDeletedAtIsNull(storeId).orElseThrow(()->
                 new NotFoundException(NOT_FOUND_STORE));
 
-        //user가 해당 owner인지 확인
+        //user가  가게 owner인지 확인
         if(user.getId()!= store.getUser().getId()){
             throw new InvalidParameterException(INVALID_USER_AUTHORITY);
         }
@@ -113,14 +114,14 @@ public class StoreService {
 
     @Transactional
     public void deleteStore(Long userId,Long storeId) {
-        //user가 해당 owner인지 확인
+
         //user가 존재하는 지 확인
         User user=userRepository.findById(userId).orElseThrow(()->
                 new NotFoundException(NOT_FOUND_USER));
-
         Store store=storeRepository.findById(storeId).orElseThrow(()->
                 new NotFoundException(NOT_FOUND_STORE));
 
+        //user가 해당 owner인지 확인
         if(user.getId()!= store.getUser().getId()){
             throw new InvalidParameterException(INVALID_USER_AUTHORITY);
         }
